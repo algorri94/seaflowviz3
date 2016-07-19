@@ -1,0 +1,51 @@
+.header {
+  height: 40px;
+}
+
+#cruise-map {
+  height: 100%;
+  padding: 0; 
+  margin: 0;
+  border-style: none;
+}
+
+#temp, #speed, #prosyn, #sal, #size {
+  height: 100px;
+}
+
+#abundance {
+  height: 225;
+}
+
+.right-float-div{
+  background: none; 
+  border-style: none;
+  top: 25px;
+  right: 25px;
+}
+
+.transparent-button{
+  background:rgba(255,255,255,1); 
+  border-style: none;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+
+.transparent-button:focus{
+  border-style: none;
+  outline: none;
+}
+
+.navmenu{
+  width: 40%;
+  border-style: none;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: -2px 0px 10px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+
+.navmenu-item{
+  top:5px;
+  width:39%;
+}
