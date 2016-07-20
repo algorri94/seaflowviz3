@@ -133,7 +133,7 @@ function Dashboard(events) {
     }
     getjsonp(o.table, self.cruise, o.from, o.to, function(jsonp) {
       var data = transformData(jsonp, o.recordHandler);
-      fillGaps(o.cur, data);  // Fill gaps in record with null objects
+      //fillGaps(o.cur, data);  // Fill gaps in record with null objects
       o.cur.push.apply(o.cur, data);  // Add new data to cur
       if ($.isFunction(o.extra)) {
         // Run user supplied extra function

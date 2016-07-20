@@ -3,6 +3,7 @@ function Charts(events) {
 
   self.charts = {};
   self.events = events;
+  self.max = null;
 
   // Configure charts
   setDefaultChartOptions();
@@ -17,18 +18,20 @@ function Charts(events) {
 
     addXPlotBands(self.charts.fsc_small.xAxis[0], data.all, "par");
     addXPlotBands(self.charts.abundance.xAxis[0], data.all, "par");
+    refreshTimeFrame(3600000, getLatestEpoch(data.new));
   });
   $(self.events).on("newstatdata", function(event, data) {
     //console.log("newstatdata");
     addToPopSeries(self.charts.fsc_small, data.new, "fsc_small");
     addToPopSeries(self.charts.abundance, data.new, "abundance");
     addToSingleSeries(self.charts.prosyn, data.new, "prosyn", "ProSyn");
+    refreshTimeFrame(3600000, getLatestEpoch(data.new));
   });
   /*$(self.events).on("newcstardata", function(event, data) {
     addToSingleSeries(self.charts.cstar, data.new, "attenuation", "Attenuation");
   });*/
   $(self.events).on("newdaterange", function(event, data) {
-    //console.log("newdaterange: " + isoext(data));
+    self.max = data.max;
     Object.keys(self.charts).forEach(function(c) {
       if (self.charts[c] && self.charts[c] !== data.triggerChart) {
         setTimeout(function() {
@@ -41,6 +44,16 @@ function Charts(events) {
     //console.log("newcruise");
     initCharts();  // clear charts
   });
+
+  function refreshTimeFrame(timeframe_ms, latest_epoch, charts){
+    if(latest_epoch>self.max){
+      $(self.events).triggerHandler("newdaterange", {
+            min: latest_epoch-timeframe_ms,
+            max: latest_epoch,
+            triggerChart: ""
+      });
+    }
+  }
 
   // Define a handler for setExtreme x-axis events
   function setExtremesHandler(e) {
@@ -621,4 +634,14 @@ function isoext(ext) {
     return new Date(ext.min).toISOString() + " " + new Date(ext.max).toISOString();
   }
   return "undefined undefined";
+}
+
+function getLatestEpoch(data){
+  var latest = 0;
+  data.forEach(function(d){
+    if(d.epoch_ms>latest){
+      latest = d.epoch_ms;
+    }
+  });
+  return latest;
 }

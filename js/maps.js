@@ -27,9 +27,6 @@ function SeaflowMap(div, events) {
   }).addTo(self.cruiseMap);  // add mouse coordinate display
 
   // Register event handlers here
-  $(self.events).on("newdaterange", function(event, data) {
-    self.updateDateRange(data.min, data.max);
-  });
   $(self.events).on("newsfldata", function(event, data) {
     self.addLocs(data.new);
   });
@@ -41,13 +38,7 @@ function SeaflowMap(div, events) {
   $(self.events).on("newrecpath", function(event, data){
     self.recPath = data;
     self.update();
-  })
-
-  self.updateDateRange = function(minDate, maxDate) {
-    self.min = minDate;
-    self.max = maxDate;
-    self.update();
-  };
+  });
 
   self.addLocs = function(newLocs) {
     newLocs.forEach(function(loc) {
@@ -81,12 +72,6 @@ function SeaflowMap(div, events) {
       weight: 5
     });
     var latestCircle = new L.marker(latestLatLng, {icon: boatIcon});
-    var allCruiseLine = new L.polyline(allLatLngs, {
-      color: "gray",
-      weight: 3,
-      opacity: 0.5,
-      smoothFactor: 1
-    });
     var selectedCruiseLine = new L.polyline(selectedLatLngs, {
       color: "red",
       weight: 4,
@@ -94,7 +79,7 @@ function SeaflowMap(div, events) {
       smoothFactor: 1
     });
 
-    var fg = L.featureGroup([allCruiseLine, selectedCruiseLine, latestCircle]);
+    var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
     if(self.recPath){
       var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.rotation)], {
@@ -113,7 +98,7 @@ function SeaflowMap(div, events) {
                 weight: 4}})}
           ]
       });
-      fg = L.featureGroup([allCruiseLine, selectedCruiseLine, latestCircle, arrow, decorator]);
+      fg = L.featureGroup([selectedCruiseLine, latestCircle, arrow, decorator]);
     }
     
 
