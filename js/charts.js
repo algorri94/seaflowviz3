@@ -13,15 +13,15 @@ function Charts(events) {
     addToSingleSeries(self.charts.sal, data.new, "salinity", "Salinity");
     addToSingleSeries(self.charts.temp, data.new, "temp", "Temperature");
 
-    //addToNavigatorSeries(self.charts.abundance, data.new, "par");
+    addToNavigatorSeries(self.charts.abundance, data.new, "par");
 
-    //addXPlotBands(self.charts.fsc_small.xAxis[0], data.all, "par");
-    //addXPlotBands(self.charts.abundance.xAxis[0], data.all, "par");
+    addXPlotBands(self.charts.fsc_small.xAxis[0], data.all, "par");
+    addXPlotBands(self.charts.abundance.xAxis[0], data.all, "par");
   });
   $(self.events).on("newstatdata", function(event, data) {
     //console.log("newstatdata");
-    //addToPopSeries(self.charts.fsc_small, data.new, "fsc_small");
-    //addToPopSeries(self.charts.abundance, data.new, "abundance");
+    addToPopSeries(self.charts.fsc_small, data.new, "fsc_small");
+    addToPopSeries(self.charts.abundance, data.new, "abundance");
     addToSingleSeries(self.charts.prosyn, data.new, "prosyn", "ProSyn");
   });
   /*$(self.events).on("newcstardata", function(event, data) {
@@ -34,7 +34,7 @@ function Charts(events) {
         setTimeout(function() {
           self.charts[c].xAxis[0].setExtremes(data.min, data.max, true, false);
         }, 0);
-      }1
+      }
     });
   });
   $(self.events).on("newcruise", function(event, data) {
@@ -129,7 +129,7 @@ function Charts(events) {
       yTickPixelInterval: 30
     });
 
-    /*if (self.charts.fsc_small) {
+    if (self.charts.fsc_small) {
       self.charts.fsc_small.destroy();
     }
     self.charts.fsc_small = makeLineChart({
@@ -153,12 +153,11 @@ function Charts(events) {
       series: makeEmptyPopSeries(),
       seriesValueSuffix: " 10<sup>6</sup> cells/L",
       div: "abundance",
-      events: {legendItemClick: function () {}},
+      allowPointSelect: false,
       showLegend: true,
-      showNavigator: true,
-      showXAxis: true,
-      setExtremes: setExtremesHandler
-    });*/
+      showNavigator: false,
+      showXAxis: true
+    });
     /*self.charts.cstar = makeLineChart({
       title: null,
       yAxisTitle: "Attenuation",
@@ -364,6 +363,15 @@ function makeLineChart(options) {
     scrollbar: {
       enabled: false
     },
+    plotOptions: {
+        series: {
+            events: {
+                legendItemClick: function () {
+                    return false; // <== returning false will cancel the default action
+                }
+            }
+        }
+    },
     series: options.series
   });
   c.showLoading();
@@ -506,7 +514,7 @@ function addXPlotBands(axis, data, key) {
 }
 
 function addToNavigatorSeries(chart, data, key) {
-  var nav = getNavigator(chart),
+  /*var nav = getNavigator(chart),
     plotExtremes = chart.xAxis[0].getExtremes(),
     navExtremes = chart.xAxis[1].getExtremes(),
     pinRight = false,
@@ -539,7 +547,7 @@ function addToNavigatorSeries(chart, data, key) {
     chart.xAxis[0].setExtremes(plotExtremes.min, latest);
   }
 
-  chart.redraw();
+  chart.redraw();*/
 }
 
 function getNavigator(chart) {
@@ -576,29 +584,6 @@ function lowSpans(xvals, yvals, cutoff) {
   }
 
   return spans;
-}
-
-// Remove a single point. If this point represents grouped data remove all
-// points in underlying raw series data, series.xData.
-function removePoint(point) {
-  var toNullify = findXDataPoints(point),
-      i = 0;
-
-  // Series reference may disappear after point removal so save here
-  var series = point.series,
-      chart = point.series.chart,
-      xData = point.series.xData;
-  // Remove points
-  for (i=0; i<toNullify.length; i++) {
-    //console.log("removed " + new Date(toNullify[i][1]).toISOString());
-    // Since we're modifying array always remove point at first index in list
-    series.removePoint(toNullify[0][0], false);
-  }
-  // Add back null points to create gap
-  for (i=0; i<toNullify.length; i++) {
-    series.addPoint([toNullify[i][1], null], false);
-  }
-  chart.redraw();
 }
 
 // Return an array of 2-tuples for series.xData points corresponding to the

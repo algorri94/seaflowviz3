@@ -1,6 +1,5 @@
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seaflow</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
   <link href="leaflet/leaflet.css" rel="stylesheet" />
@@ -19,7 +18,7 @@
 
 <body>
   <div id="cruise-map"></div>
-  <nav id="myNavmenu" class="navmenu navmenu-fixed-right offcanvas" role="navigation">
+  <nav id="myNavmenu" class="navmenu navmenu-fixed-left offcanvas" role="navigation">
     <div class="container pull-left text-left navmenu-item">
     <div class="row navmenu-item">
       <div class="col-xs-6 navmenu-item" id="speed"></div>
@@ -33,10 +32,16 @@
     <div class="row">
       <div class="col-xs-6 navmenu-item" id="prosyn"></div>
     </div>
+    <div class="row">
+      <div class="col-xs-6 navmenu-item" id="size"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 navmenu-item" id="abundance"></div>
+    </div>
   </div>
   </nav>
-  <div class="right-float-div navbar navbar-default navbar-fixed-top pull-right text-right">
-  <button type="button" class="btn transparent-button" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+  <div class="right-float-div navbar navbar-default navbar-fixed-top text-right">
+  <button type="button" class="btn options-button" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
     <i class="material-icons">view_headline</i>
   </button>
 

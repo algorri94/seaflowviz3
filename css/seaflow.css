@@ -14,17 +14,19 @@
 }
 
 #abundance {
-  height: 225;
+  height: 165px;
 }
 
 .right-float-div{
   background: none; 
   border-style: none;
+  position: absolute;
   top: 25px;
-  right: 25px;
+  left: 25px;
+  width: 30px;
 }
 
-.transparent-button{
+.options-button{
   background:rgba(255,255,255,1); 
   border-style: none;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
@@ -32,7 +34,7 @@
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
 
-.transparent-button:focus{
+.options-button:focus{
   border-style: none;
   outline: none;
 }

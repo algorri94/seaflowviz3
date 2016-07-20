@@ -9,7 +9,8 @@ function SeaflowMap(div, events) {
   self.recPath = null;
   self.cruiseLayer = null;
 
-  self.cruiseMap = L.map(div).setView([47, -122], 4);
+  self.cruiseMap = L.map(div,{zoomControl:false}).setView([47, -122], 4);
+  L.control.zoom({position:'bottomright'}).addTo(self.cruiseMap);
   L.Icon.Default.imagePath = '/leaflet/images';
 
   L.tileLayer.provider("Esri.OceanBasemap").addTo(self.cruiseMap);
