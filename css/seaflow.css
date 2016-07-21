@@ -17,13 +17,22 @@
   height: 165px;
 }
 
-.right-float-div{
+.right-float-div1{
   background: none; 
   border-style: none;
   position: absolute;
   top: 25px;
   left: 25px;
-  width: 30px;
+  width: 10px;
+}
+
+.right-float-div2{
+  background: none; 
+  border-style: none;
+  position: absolute;
+  top: 65px;
+  left: 25px;
+  width: 10px;
 }
 
 .options-button{
@@ -51,3 +60,5 @@
   top:5px;
   width:39%;
 }
+
+.material-icons.md-18 { font-size: 18px; }

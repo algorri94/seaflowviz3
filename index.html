@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>Seaflow</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' name='viewport' />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
   <link href="leaflet/leaflet.css" rel="stylesheet" />
   <link href="leaflet/L.Control.MousePosition.css" rel="stylesheet" />
@@ -17,10 +18,12 @@
 </head>
 
 <body>
-  <div id="cruise-map"></div>
-  <nav id="myNavmenu" class="navmenu navmenu-fixed-left offcanvas" role="navigation">
+  <div id="cruise-map" tabindex="-1"></div>
+
+  <!--Charts menu-->
+  <nav id="chartsNavmenu" class="navmenu navmenu-fixed-left offcanvas" role="navigation">
     <div class="container pull-left text-left navmenu-item">
-    <div class="row navmenu-item">
+    <div class="row">
       <div class="col-xs-6 navmenu-item" id="speed"></div>
     </div>
     <div class="row">
@@ -40,11 +43,18 @@
     </div>
   </div>
   </nav>
-  <div class="right-float-div navbar navbar-default navbar-fixed-top text-right">
-  <button type="button" class="btn options-button" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
-    <i class="material-icons">view_headline</i>
-  </button>
 
+  <!-- Right top buttons -->
+  <div class="right-float-div1 navbar navbar-default navbar-fixed-top text-right">
+    <button type="button" class="btn options-button text-center" data-toggle="offcanvas" data-target="#chartsNavmenu" data-canvas="body">
+      <!--<i class="material-icons">view_headline</i>-->
+      <i class="material-icons md-18">insert_chart</i>
+    </button>
+  </div>
+  <div class="right-float-div2 navbar navbar-default navbar-fixed-top text-right">
+    <button type="button" class="btn options-button" id="show_tracks">
+      <i class="material-icons md-18">settings_overscan</i>
+    </button>
   </div>
 
   <script src="js/dashboard.js"></script>

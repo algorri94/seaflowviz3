@@ -16,19 +16,6 @@ function Dashboard(events) {
     cstar: []
   };
 
-  // Convert dropdown menu cruise name value to database cruise field name
-  self.cruiseFieldLookup = function(cruise) {
-    var lookup = {
-      "2014-12-08 - 2014-12-12": "SCOPE_1",
-      "2015-03-21 - 2015-03-29": "SCOPE_2",
-      "2015-05-22 - 2015-05-26": "SCOPE_3",
-      "2015-07-18 - 2015-07-22": "SCOPE_5",
-      "2015-07-25 - 2015-08-05": "SCOPE_6",
-      "realtime": "realtime"
-    };
-    return lookup[cruise];
-  };
-
   // ****************************
   // Register event handlers here
   // ****************************
@@ -36,23 +23,12 @@ function Dashboard(events) {
   // New cruise event
   // Begin data polling, which usually leads to asking for new SFL data
   $(self.events).on("newcruise", function(event, data) {
+    self.poll();
+  });
+
+  $(self.events).on("newbounds", function(event, data) {
     // Convert UI cruise name to database cruise name
-    self.cruise = self.cruiseFieldLookup(data.cruise);
-    console.log("new cruise is " + data.cruise + " => " + self.cruise);
-
-    // Clear any existing data polling
-    clearInterval(self.pollInterval);
-    self.pollInterval = null;
-
-    // Reset existing state
-    self.resetData();
-
-    // Get new data
-    if (self.cruise === "realtime") {
-      self.poll();
-    } else {
-      self.pollOnce();
-    }
+    $(events).triggerHandler("newtrackdata", getTrackData(data));
   });
 
   // New SFL data event
@@ -350,4 +326,9 @@ function geo2knots(lonlat1, lonlat2, t1, t2) {
     return null;
   }
   return km / hours / kmPerKnot;
+}
+
+
+function getTrackData(bounds){
+  return bounds;
 }
