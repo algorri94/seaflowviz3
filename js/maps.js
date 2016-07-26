@@ -41,10 +41,10 @@ function SeaflowMap(div, events) {
     self.update();
   });
   $(self.events).on("newtrackdata", function(event, data) {
-    var bounds = data;
-    self.trackData = [
+    self.trackData = data;
+        /*
         //Cruise 1
-        {cruise_id:1, lat:bounds.getSouth()+1, lon:bounds.getWest()+1, epoch_ms:1405958511000},
+        [{cruise_id:1, lat:bounds.getSouth()+1, lon:bounds.getWest()+1, epoch_ms:1405958511000},
         {cruise_id:1, lat:bounds.getSouth()+1.1, lon:bounds.getWest()+1.1, epoch_ms:1405958511000},
         {cruise_id:1, lat:bounds.getSouth()+1.2, lon:bounds.getWest()+1.1, epoch_ms:1405958511000},
         {cruise_id:1, lat:bounds.getSouth()+1.3, lon:bounds.getWest()+1.2, epoch_ms:1405958511000},
@@ -64,8 +64,8 @@ function SeaflowMap(div, events) {
         {cruise_id:2, lat:bounds.getSouth()+6.6, lon:bounds.getEast()-7, epoch_ms:1405958511000},
         {cruise_id:2, lat:bounds.getSouth()+7, lon:bounds.getEast()-7, epoch_ms:1405958511000},
         {cruise_id:2, lat:bounds.getSouth()+7.4, lon:bounds.getEast()-7.4, epoch_ms: 1406044911000}];
+        */
     self.update();
-    //alert("North:"+bounds.getNorth()+", East:"+bounds.getEast()+", South:"+bounds.getSouth()+", West:"+bounds.getWest());
   });
   $(self.events).on("newcruise", function(event, data) {
     self.locs = [];
@@ -150,7 +150,7 @@ function SeaflowMap(div, events) {
           opacity: 0.5,
           smoothFactor: 1
         });
-        trackLines.bindPopup("Cruise #"+cruise_md.cruise_id+": "+iso(cruise_md.first).slice(0, 10)+" - "+iso(cruise_md.last).slice(0, 10));
+        trackLines.bindPopup("Cruise: "+cruise_md.cruise_id);
         fg.addLayer(trackLines);
       }
     }
@@ -191,36 +191,47 @@ function toRadians (angle) {
 }
 
 function parseTrackData(data){
+  console.log(JSON.stringify(data));
+  console.log('');
+  console.log('');
+  console.log('');
   var cruises = [];
+  var dict = {};
+  var i = 0;
   data.forEach(function(point){
-    if(cruises[point.cruise_id]){
-      cruises[point.cruise_id].push(point);
+    if(dict[point.s_cruise] == null || dict[point.s_cruise] == undefined) {
+      dict[point.s_cruise] = i;
+      i++;
+    }
+    if(cruises[dict[point.s_cruise]]){
+      cruises[dict[point.s_cruise]].push(point);
     } else {
-      cruises[point.cruise_id] = [];
+      cruises[dict[point.s_cruise]] = [];
     }
   });
-  return formatCruisesTracks(cleanArray(cruises));
+  //return formatCruisesTracks(cleanArray(cruises));
+  return formatCruisesTracks(cruises);
 }
 
 function formatCruisesTracks(data){
   var output = [];
   for(var i = 0; i<data.length; i++){
     var cruise = data[i];
-    var dates = getFirstAndLastDate(cruise);
-    var id = cruise[0].cruise_id
-    var cruise_data = {cruise_id:id, first:dates[0], last:dates[1]};
-    if(output[i]==null || output[id]==undefined){
+    var id = cruise[0].s_cruise;
+    var cruise_data = {cruise_id:id};
+    if(output[i]==null || output[i]==undefined){
       output[i] = [];
     }
     output[i].push(cruise_data);
     cruise.forEach(function(point){
-        output[i].push({lat:point.lat, lng:point.lon});
+        output[i].push({lat:point.s_lat, lng:point.s_lon});
     });
   }
+  console.log(JSON.stringify(output));
   return output;
 }
 
-function getFirstAndLastDate(cruise){
+/*function getFirstAndLastDate(cruise){
   var first = Number.MAX_VALUE;
   var last = 0;
   cruise.forEach(function(point){
@@ -231,9 +242,9 @@ function getFirstAndLastDate(cruise){
     }
   });
   return [first,last];
-}
+}*/
 
-function cleanArray(array){
+/*function cleanArray(array){
   var output = [];
   for(var i = 0; i<array.length; i++){
     if(array[i]){
@@ -241,4 +252,4 @@ function cleanArray(array){
     }
   }
   return output;
-}
+}*/

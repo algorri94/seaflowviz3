@@ -342,7 +342,8 @@ function geo2knots(lonlat1, lonlat2, t1, t2) {
 
 function getTrackData(bounds){
   var url = "http://localhost:8080/bigdawg/query";
-  var query = "bdstream(GetTracksInRange, 21, 22, -159, -158)";
+  var query = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
+  var data = null;
   $.ajax({
     url : url,
     type : "POST",
@@ -352,10 +353,10 @@ function getTrackData(bounds){
       alert("error errorThrow:" + et);
     },
     success : function(jsonArray) {
-      console.log(jsonArray);
+      data = $.parseJSON(jsonArray);
     }
   });
-  return bounds;
+  return data;
 }
 
 function readFiles(index, cb){
