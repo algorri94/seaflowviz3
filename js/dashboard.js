@@ -234,7 +234,6 @@ function getTrackData(bounds){
     url : url,
     type : "POST",
     data: query,
-    jsonp : "callback",
     error : function(xhr, ts, et) {
       alert("error errorThrow:" + et);
     },
@@ -275,11 +274,11 @@ function queryData(dataType)
     url : url,
     type : "POST",
     data: query,
-    jsonp : "callback",
     error : function(xhr, ts, et) {
       alert("error errorThrow:" + et);
     },
     success : function(jsonArray) {
+      console.log(jsonArray);
       data = $.parseJSON(jsonArray);
     }
   });
