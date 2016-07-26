@@ -30,6 +30,7 @@ function SeaflowMap(div, events) {
   // Register event handlers here
   $(self.events).on("newsfldata", function(event, data) {
     self.addLocs(data.new);
+    self.update();
   });
   $(self.events).on("show_tracks", function(event, data) {
     var bounds = self.cruiseMap.getBounds();
