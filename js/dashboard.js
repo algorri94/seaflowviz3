@@ -246,23 +246,24 @@ function getTrackData(bounds){
 
 //Executes the query to get data and pulls a 10th of the data every 500ms
 function getData(dataType, cb){
-  var data = queryData(dataType);
-  var dataItems = Math.round(data.length/10);
-
-  var refreshId = setInterval(function() {
-    var output = [];
-    if(dataItems>data.length){
-      dataItems = data.length;
-    }
-    cb(data.splice(0, dataItems));
-    if (data.length==0) {
-      clearInterval(refreshId);
-    }
-  }, 500);
+  queryData(dataType, function(data){
+    var dataItems = Math.round(data.length/10);
+    var refreshId = setInterval(function() {
+      var output = [];
+      if(dataItems>data.length){
+        dataItems = data.length;
+      }
+      cb(data.splice(0, dataItems));
+      if (data.length==0) {
+        clearInterval(refreshId);
+      }
+    }, 500);
+  });
+  
 }
 
 //Returns the queried data from BigDawg
-function queryData(dataType)
+function queryData(dataType, cb)
 { 
   var query = "";
   if(dataType=="sfl") query = "bdstream(GetSFLData)";
@@ -279,8 +280,7 @@ function queryData(dataType)
     },
     success : function(jsonArray) {
       console.log(jsonArray);
-      data = $.parseJSON(jsonArray);
+      cb($.parseJSON(jsonArray));
     }
   });
-  return data;
 }
