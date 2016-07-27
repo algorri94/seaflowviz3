@@ -34,7 +34,9 @@ function Dashboard(events) {
   //New sfl data event
   //Upon recieving new sfl data, query the new steering recommendation and the bacteria data
   $(self.events).on("newsfldata", function(event, data) {
-
+    queryData("steer",function(d){
+      $(events).triggerHandler("newrecpath", d);
+    });
     self.getData({
       cur: self.data.stat,
       table: "stat",
