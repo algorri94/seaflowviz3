@@ -157,7 +157,7 @@ function localTileLayer(tileHost) {
 }
 
 function calculatePointAtRotation(origLoc, degree, bounds){
-  var distance = Math.abs(bound.getNorth()-bound.getSouth())/10;
+  var distance = Math.abs(bounds.getNorth()-bounds.getSouth())/10;
   var rad = toRadians(degree+180);
   return L.latLng(origLoc.lat+distance*Math.sin(rad), origLoc.lng-distance*Math.cos(rad));
 }
