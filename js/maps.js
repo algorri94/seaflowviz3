@@ -44,11 +44,11 @@ function SeaflowMap(div, events) {
     self.trackData = data;
     self.update();
   });
-  $(self.events).on("newcruise", function(event, data) {
+  /*$(self.events).on("newcruise", function(event, data) {
     self.locs = [];
     self.update();
     self.zoomed = false;
-  });
+  });*/
   $(self.events).on("newrecpath", function(event, data){
     self.recPath = data;
   });
