@@ -3,11 +3,8 @@
 function Dashboard(events) {
   var self = this;
 
-  self.refreshTimeMilli = 1 * 1 * 1000; // every 3 minute
+  self.refreshTimeMilli = 1 * 5 * 1000; // every 3 minute
   self.events = events;  // will register jQuery events
-  self.latest = 0;  // Date to start pulling data from
-  self.increment = 180000;  // 3 minutes in ms
-  self.cruise = "realtime";
   self.pollInterval = null;
 
   self.data = {
@@ -26,11 +23,18 @@ function Dashboard(events) {
     self.poll();
   });
 
-  $(self.events).on("newbounds", function(event, data) {
-    $(events).triggerHandler("newtrackdata", getTrackData(data));
+  //New bounds event
+  //Execute query to get historial track data and throw newtrackdata event with the results
+  $(self.events).on("newbounds", function(event, bounds) {
+    getTrackData(bounds, function(d){
+      $(events).triggerHandler("newtrackdata", d);
+    });    
   });
 
+  //New sfl data event
+  //Upon recieving new sfl data, query the new steering recommendation and the bacteria data
   $(self.events).on("newsfldata", function(event, data) {
+
     self.getData({
       cur: self.data.stat,
       table: "stat",
@@ -49,8 +53,6 @@ function Dashboard(events) {
   self.pollOnce = function() {
     self.getData({
       cur: self.data.sfl,
-      //from: self.latest,
-      //to: self.latest + self.increment,
       table: "sfl",
       event: "newsfldata",
       recordHandler: sflHandler,
@@ -155,13 +157,6 @@ function statHandler(d, data) {
   }
 }
 
-function cstarHandler(d, data) {
-  d.date = d.epoch_ms;
-  d.iso8601 = iso(d.epoch_ms);
-  d.attenuation = d.attenuation;
-  data.push(d);
-}
-
 function addSpeed(data) {
   var prev = null;
   data.forEach(function(d) {
@@ -225,26 +220,7 @@ function geo2knots(lonlat1, lonlat2, t1, t2) {
   return km / hours / kmPerKnot;
 }
 
-
-function getTrackData(bounds){
-  var url = "http://localhost:8080/bigdawg/query";
-  var query = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
-  var data = null;
-  $.ajax({
-    url : url,
-    type : "POST",
-    data: query,
-    error : function(xhr, ts, et) {
-      alert("error errorThrow:" + et);
-    },
-    success : function(jsonArray) {
-      data = $.parseJSON(jsonArray);
-    }
-  });
-  return data;
-}
-
-//Executes the query to get data and pulls a 10th of the data every 500ms
+//Executes the query to get data and executes the callback every 500ms with a 10th of the data
 function getData(dataType, cb){
   queryData(dataType, function(data){
     var dataItems = Math.round(data.length/10);
@@ -262,13 +238,34 @@ function getData(dataType, cb){
   
 }
 
-//Returns the queried data from BigDawg
+  ////////////////////////////////////////////////////////
+ ////////////////////BigDawg Queries/////////////////////
+////////////////////////////////////////////////////////
+
+//Queries BigDawg to get the historical track data inside the given bounds and executes the callback with the results
+function getTrackData(bounds, cb){
+  var url = "http://localhost:8080/bigdawg/query";
+  var query = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
+  $.ajax({
+    url : url,
+    type : "POST",
+    data: query,
+    error : function(xhr, ts, et) {
+      alert("error errorThrow:" + et);
+    },
+    success : function(jsonArray) {
+      cb($.parseJSON(jsonArray));
+    }
+  });
+}
+
+//Executes a query on BigDawg which depends on the dataType given and executes the callback with the given results
 function queryData(dataType, cb)
 { 
   var query = "";
   if(dataType=="sfl") query = "bdstream(GetSFLData)";
   if(dataType=="stat") query = "bdstream(GetBACData)";
-  if(dataType=="steer") query = "bdstream()";
+  if(dataType=="steer") query = "bdstream(GetSteeringData)";
   var url = "http://localhost:8080/bigdawg/query";
   var data = null;
   $.ajax({
