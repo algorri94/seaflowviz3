@@ -51,7 +51,6 @@ function SeaflowMap(div, events) {
   });
   $(self.events).on("newrecpath", function(event, data){
     self.recPath = data;
-    self.update();
   });
 
   self.addLocs = function(newLocs) {

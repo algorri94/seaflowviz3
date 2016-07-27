@@ -273,7 +273,6 @@ function queryData(dataType, cb)
       alert("error errorThrow:" + et);
     },
     success : function(jsonArray) {
-      console.log(jsonArray);
       cb($.parseJSON(jsonArray));
     }
   });
