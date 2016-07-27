@@ -31,20 +31,6 @@ function Dashboard(events) {
     });    
   });
 
-  //New sfl data event
-  //Upon recieving new sfl data, query the new steering recommendation and the bacteria data
-  $(self.events).on("newsfldata", function(event, data) {
-    queryData("steer",function(d){
-      $(events).triggerHandler("newrecpath", d);
-    });
-    self.getData({
-      cur: self.data.stat,
-      table: "stat",
-      event: "newstatdata",
-      recordHandler: statHandler
-    });
-  });
-
   // **************************
   // Database polling functions
   // **************************
@@ -61,6 +47,15 @@ function Dashboard(events) {
       extra: function(allData, newData) {
         addSpeed(allData);
       }
+    });
+    queryData("steer",function(d){
+      $(events).triggerHandler("newrecpath", d);
+    });
+    self.getData({
+      cur: self.data.stat,
+      table: "stat",
+      event: "newstatdata",
+      recordHandler: statHandler
     });
   };
 
@@ -267,7 +262,7 @@ function queryData(dataType, cb)
   var query = "";
   if(dataType=="sfl") query = "bdstream(GetSFLData)";
   if(dataType=="stat") query = "bdstream(GetBACData)";
-  if(dataType=="steer") query = "bdstream(GetSteeringData)";
+  if(dataType=="steer") query = "bdstream(Steering)";
   var url = "http://localhost:8080/bigdawg/query";
   var data = null;
   $.ajax({
