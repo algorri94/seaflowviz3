@@ -42,29 +42,6 @@ function SeaflowMap(div, events) {
   });
   $(self.events).on("newtrackdata", function(event, data) {
     self.trackData = data;
-        /*
-        //Cruise 1
-        [{cruise_id:1, lat:bounds.getSouth()+1, lon:bounds.getWest()+1, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+1.1, lon:bounds.getWest()+1.1, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+1.2, lon:bounds.getWest()+1.1, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+1.3, lon:bounds.getWest()+1.2, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+1.4, lon:bounds.getWest()+1.2, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+1.8, lon:bounds.getWest()+1.6, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+2.2, lon:bounds.getWest()+1.6, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+2.6, lon:bounds.getWest()+2, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+3, lon:bounds.getWest()+2, epoch_ms:1405958511000},
-        {cruise_id:1, lat:bounds.getSouth()+3.4, lon:bounds.getWest()+2.4, epoch_ms: 1406044911000},
-        //Cruise 2
-        {cruise_id:2, lat:bounds.getSouth()+5.1, lon:bounds.getEast()-4, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+5.2, lon:bounds.getEast()-4.5, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+5.3, lon:bounds.getEast()-4.5, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+5.4, lon:bounds.getEast()-5, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+5.8, lon:bounds.getEast()-6, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+6.2, lon:bounds.getEast()-6.5, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+6.6, lon:bounds.getEast()-7, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+7, lon:bounds.getEast()-7, epoch_ms:1405958511000},
-        {cruise_id:2, lat:bounds.getSouth()+7.4, lon:bounds.getEast()-7.4, epoch_ms: 1406044911000}];
-        */
     self.update();
   });
   $(self.events).on("newcruise", function(event, data) {
@@ -119,7 +96,7 @@ function SeaflowMap(div, events) {
     var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
     if(self.recPath){
-      var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.rotation)], {
+      var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation)], {
         color: "green",
         weight: 4,
         opacity: 1,
