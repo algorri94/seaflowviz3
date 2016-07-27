@@ -225,7 +225,7 @@ function geo2knots(lonlat1, lonlat2, t1, t2) {
 //Executes the query to get data and executes the callback every 500ms with a 10th of the data
 function getData(dataType, cb){
   queryData(dataType, function(data){
-    var dataItems = Math.round(data.length/10);
+    var dataItems = Math.round(data.length/5);
     var refreshId = setInterval(function() {
       var output = [];
       if(dataItems>data.length){
@@ -235,7 +235,7 @@ function getData(dataType, cb){
       if (data.length==0) {
         clearInterval(refreshId);
       }
-    }, 500);
+    }, 1000);
   });
   
 }
