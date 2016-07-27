@@ -95,7 +95,7 @@ function SeaflowMap(div, events) {
     var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
     if(self.recPath){
-      var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation)], {
+      var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation, self.cruiseMap.getBounds())], {
         color: "green",
         weight: 4,
         opacity: 1,
@@ -156,8 +156,7 @@ function localTileLayer(tileHost) {
   });
 }
 
-function calculatePointAtRotation(origLoc, degree){
-  var bounds = self.cruiseMap.getBounds();
+function calculatePointAtRotation(origLoc, degree, bounds){
   var distance = Math.abs(bound.getNorth()-bound.getSouth())/10;
   var rad = toRadians(degree+180);
   return L.latLng(origLoc.lat+distance*Math.sin(rad), origLoc.lng-distance*Math.cos(rad));
