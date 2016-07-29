@@ -58,7 +58,13 @@
 
 .navmenu-item{
   top:5px;
-  width:39%;
+  width:100%;
 }
 
 .material-icons.md-18 { font-size: 18px; }
+
+.row{
+  width: 100%;
+}
+
+.highcharts-container{width:100% !important; height:100% !important;}

@@ -2,7 +2,7 @@ $(function () {
   var events = {};
   var tracksDisplayed = false;
   var map = new SeaflowMap("cruise-map", events);
-  var charts = new Charts(events);
+  var charts = new Charts(events, $(window).width()*0.35);
   var dash = new Dashboard(events);
   $(events).triggerHandler("newcruise", {cruise: "realtime"});
   window.charts = charts;
@@ -17,6 +17,6 @@ $(function () {
         	$(events).triggerHandler("hide_tracks");
         	tracksDisplayed = false;
         }
-    }); 
+    });
   });
 });

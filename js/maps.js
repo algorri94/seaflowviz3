@@ -94,7 +94,7 @@ function SeaflowMap(div, events) {
 
     var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
-    if(self.recPath){
+    if(self.recPath && latestLatLng){
       var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation, self.cruiseMap.getBounds())], {
         color: "green",
         weight: 4,
@@ -185,7 +185,6 @@ function parseTrackData(data){
       cruises[dict[point.s_cruise]] = [];
     }
   });
-  //return formatCruisesTracks(cleanArray(cruises));
   return formatCruisesTracks(cruises);
 }
 
@@ -206,26 +205,3 @@ function formatCruisesTracks(data){
   console.log(JSON.stringify(output));
   return output;
 }
-
-/*function getFirstAndLastDate(cruise){
-  var first = Number.MAX_VALUE;
-  var last = 0;
-  cruise.forEach(function(point){
-    if(point.epoch_ms>last){
-      last = point.epoch_ms;
-    } else if (point.epoch_ms<first){
-      first = point.epoch_ms;
-    }
-  });
-  return [first,last];
-}*/
-
-/*function cleanArray(array){
-  var output = [];
-  for(var i = 0; i<array.length; i++){
-    if(array[i]){
-      output.push(array[i]);
-    }
-  }
-  return output;
-}*/

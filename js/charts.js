@@ -1,4 +1,4 @@
-function Charts(events) {
+function Charts(events, width) {
   var self = this;
 
   self.charts = {};
@@ -6,7 +6,7 @@ function Charts(events) {
   self.max = null;
 
   // Configure charts
-  setDefaultChartOptions();
+  setDefaultChartOptions(width);
 
   // Register event handlers here
   $(self.events).on("newsfldata", function(event, data) {
@@ -394,7 +394,7 @@ function makeLineChart(options) {
 /*
 Set options common to all charts
 */
-function setDefaultChartOptions() {
+function setDefaultChartOptions(width) {
   var headerFormat = '<span style="font-size: 10px"><strong>{point.key}</strong>';
   headerFormat += '<br /></span>';
 
@@ -422,7 +422,8 @@ function setDefaultChartOptions() {
     },
     chart: {
       plotBorderWidth: 2,
-      spacingBottom: 3
+      spacingBottom: 3,
+      width: width
     },
     yAxis: {
       floor: 0,
