@@ -94,7 +94,7 @@ function SeaflowMap(div, events) {
 
     var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
-    if(self.recPath && latestLatLng){
+    if(self.recPath && latestLatLng && self.zoomed){
       var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation, self.cruiseMap.getBounds())], {
         color: "green",
         weight: 4,
