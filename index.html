@@ -6,6 +6,7 @@
   <link href="leaflet/leaflet.css" rel="stylesheet" />
   <link href="leaflet/L.Control.MousePosition.css" rel="stylesheet" />
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-slider.min.css" rel="stylesheet">
   <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
   <link href="css/seaflow.css" rel="stylesheet" />
   <script src="js/jquery.min.js"></script>
@@ -45,21 +46,30 @@
   </nav>
 
   <!-- Right top buttons -->
-  <div class="right-float-div1 navbar navbar-default navbar-fixed-top text-right">
+  <div class="left-float-div1 navbar navbar-default navbar-fixed-top text-right">
     <button id="show_charts" type="button" class="btn options-button text-center" data-toggle="offcanvas" data-target="#chartsNavmenu" data-canvas="body">
       <!--<i class="material-icons">view_headline</i>-->
       <i class="material-icons md-18">insert_chart</i>
     </button>
   </div>
-  <div class="right-float-div2 navbar navbar-default navbar-fixed-top text-right">
+  <div class="left-float-div2 navbar navbar-default navbar-fixed-top text-right">
     <button type="button" class="btn options-button" id="show_tracks">
       <i class="material-icons md-18">settings_overscan</i>
     </button>
   </div>
 
+  <!-- Slider panel-->
+  <div class="left-float-div-bottom navbar navbar-default navbar-fixed-bottom text-left" id="slider_panel">
+    <p class="slider_panel_text">Temperature</p>
+    <b>-</b> <input id="temp_slide" type="text" class="span2"/> <b>+</b>
+    <p class="slider_panel_text">Salinity</p>
+    <b>-</b> <input id="sal_slide" type="text" class="span2"/> <b>+</b>
+  </div>
+
   <script src="js/dashboard.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/maps.js"></script>
+  <script src="js/bootstrap-slider.min.js"></script>
   <script src="js/plot.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/jasny-bootstrap.min.js"></script>

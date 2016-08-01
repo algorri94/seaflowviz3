@@ -8,6 +8,22 @@ $(function () {
   window.charts = charts;
   window.map = map;
   window.dash = dash;
+  $("#temp_slide").slider({
+    min: -1,
+    max: 1,
+    value: 0,
+    tooltip: 'hide'
+  }).on('change', function(e){
+    $(events).triggerHandler("newtemp", e.value.newValue);
+  });
+  $("#sal_slide").slider({
+    min: -1,
+    max: 1,
+    value: 0,
+    tooltip: 'hide'
+  }).on('change', function(e){
+    $(events).triggerHandler("newsal", e.value.newValue);
+  });
   $(document).ready(function() {
     $("#show_tracks").click(function(){
     	if(!tracksDisplayed){

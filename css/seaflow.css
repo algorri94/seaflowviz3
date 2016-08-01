@@ -17,7 +17,7 @@
   height: 165px;
 }
 
-.right-float-div1{
+.left-float-div1{
   background: none; 
   border-style: none;
   position: absolute;
@@ -26,13 +26,26 @@
   width: 10px;
 }
 
-.right-float-div2{
+.left-float-div2{
   background: none; 
   border-style: none;
   position: absolute;
   top: 65px;
   left: 25px;
   width: 10px;
+}
+
+.left-float-div-bottom{
+  border-radius: 4px;
+  background: white;
+  border-style: none;
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  width: 130px;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
 .options-button{
@@ -68,3 +81,29 @@
 }
 
 .highcharts-container{width:100% !important; height:100% !important;}
+
+.slider.slider-horizontal{
+  width:45px;
+  margin-right:1em;
+  margin-left: 1em;
+}
+
+.slider-selection, .slider-track-high{
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+#slider_panel {
+  padding: 0.5em 1em;
+}
+
+.slider_panel_text{
+  padding-bottom: 1px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.slider-handle{
+  background: rgb(51, 51, 51);
+}

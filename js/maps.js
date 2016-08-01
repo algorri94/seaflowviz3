@@ -9,6 +9,9 @@ function SeaflowMap(div, events) {
   self.recPath = null;
   self.cruiseLayer = null;
   self.trackData = null;
+  self.currTemperature = 0;
+  self.currSalinity = 0;
+  self.pathNames = ["","st_rotation","","","","","",""];
 
   self.cruiseMap = L.map(div,{zoomControl:false}).setView([47, -122], 4);
   L.control.zoom({position:'bottomright'}).addTo(self.cruiseMap);
@@ -32,6 +35,14 @@ function SeaflowMap(div, events) {
     self.addLocs(data.new);
     self.update();
   });
+  $(self.events).on("newtemp", function(event, data) {
+    self.currTemperature = data;
+    self.update();
+  });
+  $(self.events).on("newsal", function(event, data) {
+    self.currSalinity = data;
+    self.update();
+  });
   $(self.events).on("show_tracks", function(event, data) {
     var bounds = self.cruiseMap.getBounds();
     $(events).triggerHandler("newbounds", bounds);
@@ -44,11 +55,6 @@ function SeaflowMap(div, events) {
     self.trackData = data;
     self.update();
   });
-  /*$(self.events).on("newcruise", function(event, data) {
-    self.locs = [];
-    self.update();
-    self.zoomed = false;
-  });*/
   $(self.events).on("newrecpath", function(event, data){
     self.recPath = data;
   });
@@ -95,24 +101,28 @@ function SeaflowMap(div, events) {
     var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
     if(self.recPath && latestLatLng && self.zoomed){
-      var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath.st_rotation, self.cruiseMap.getBounds())], {
-        color: "green",
-        weight: 4,
-        opacity: 1,
-        smoothFactor: 1
-      });
-      var decorator = L.polylineDecorator(arrow, {
-          patterns: [
-              // define a pattern of 10px-wide dashes, repeated every 20px on the line 
-              {offset: '100%', repeat: 0, symbol: new L.Symbol.arrowHead({pixelSize: 5, polygon: false, pathOptions: {
-                stroke: true,
-                color: "green",
-                opacity: 1,
-                weight: 4}})}
-          ]
-      });
-      fg.addLayer(arrow);
-      fg.addLayer(decorator);
+      var rotation = 0;
+      var value = (self.currTemperature + self.currSalinity * 3) + 4;
+      if(self.pathNames[value]!="" && value != 4){
+        var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath[self.pathNames[value]], self.cruiseMap.getBounds())], {
+          color: "green",
+          weight: 4,
+          opacity: 1,
+          smoothFactor: 1
+        });
+        var decorator = L.polylineDecorator(arrow, {
+            patterns: [
+                // define a pattern of 10px-wide dashes, repeated every 20px on the line 
+                {offset: '100%', repeat: 0, symbol: new L.Symbol.arrowHead({pixelSize: 5, polygon: false, pathOptions: {
+                  stroke: true,
+                  color: "green",
+                  opacity: 1,
+                  weight: 4}})}
+            ]
+        });
+        fg.addLayer(arrow);
+        fg.addLayer(decorator);
+      }
     }
 
     if(self.trackData){
