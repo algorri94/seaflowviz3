@@ -11,7 +11,15 @@ function SeaflowMap(div, events) {
   self.trackData = null;
   self.currTemperature = 0;
   self.currSalinity = 0;
-  self.pathNames = ["","st_rotation","","","","","",""];
+  self.pathNames = ["st_neg_temp_neg_sal_rotation",   //0 = Low temperature & low salinity
+                    "st_neg_sal_rotation",            //1 = Low salinity
+                    "st_pos_temp_neg_sal_rotation",   //2 = High Temperature & low salinity
+                    "st_neg_temp_rotation",           //3 = Low temperature
+                    "nosteer",                        //4 = No steering
+                    "st_rotation",                    //5 = High temperature
+                    "st_neg_temp_pos_sal_rotation",   //6 = Low temperature & high salinity
+                    "st_sal_rotation",                //7 = High salinity
+                    "st_pos_temp_pos_sal_rotation"];  //8 = High temperature & high salinity
 
   self.cruiseMap = L.map(div,{zoomControl:false}).setView([47, -122], 4);
   L.control.zoom({position:'bottomright'}).addTo(self.cruiseMap);
@@ -103,7 +111,7 @@ function SeaflowMap(div, events) {
     if(self.recPath && latestLatLng && self.zoomed){
       var rotation = 0;
       var value = (self.currTemperature + self.currSalinity * 3) + 4;
-      if(self.pathNames[value]!="" && value != 4){
+      if(self.pathNames[value]!=="nosteer"){
         var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath[self.pathNames[value]], self.cruiseMap.getBounds())], {
           color: "green",
           weight: 4,

@@ -243,6 +243,7 @@ function getData(dataType, cb){
 function getTrackData(bounds, cb){
   var url = "http://localhost:8080/bigdawg/query";
   var query = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
+  var query2 = "bdrel(SELECT * FROM psql_sflavg_tbl)";
   $.ajax({
     url : url,
     type : "POST",
@@ -262,7 +263,7 @@ function queryData(dataType, cb)
   var query = "";
   if(dataType=="sfl") query = "bdstream(GetSFLData)";
   if(dataType=="stat") query = "bdstream(GetBACData)";
-  if(dataType=="steer") query = "bdstream(Steering)";
+  if(dataType=="steer") query = "bdstream(MultiSteering)";
   var url = "http://localhost:8080/bigdawg/query";
   var data = null;
   $.ajax({
