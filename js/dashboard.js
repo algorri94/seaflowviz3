@@ -241,12 +241,13 @@ function getData(dataType, cb){
 
 //Queries BigDawg to get the historical track data inside the given bounds and executes the callback with the results
 function getTrackData(bounds, cb){
-  var url = "http://localhost:8080/bigdawg/query";
+  var url1 = "http://localhost:8080/bigdawg/query";
+  var url2 = "http://localhost:8080/bigdawg/query";
   var query1 = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
   var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl)";
   //Query to S-Store
   $.ajax({
-    url : url,
+    url : url1,
     type : "POST",
     data: query1,
     error : function(xhr, ts, et) {
@@ -258,7 +259,7 @@ function getTrackData(bounds, cb){
   });
   //Query to postgres
   $.ajax({
-    url : url,
+    url : url2,
     type : "POST",
     data: query2,
     error : function(xhr, ts, et) {
