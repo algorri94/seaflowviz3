@@ -9,6 +9,8 @@ function Charts(events, width) {
   setDefaultChartOptions(width);
 
   // Register event handlers here
+
+  //Recieve new seaflow data event and update the charts with the data received
   $(self.events).on("newsfldata", function(event, data) {
     addToSingleSeries(self.charts.speed, data.new, "speed", "Speed");
     addToSingleSeries(self.charts.sal, data.new, "salinity", "Salinity");
@@ -20,16 +22,14 @@ function Charts(events, width) {
     addXPlotBands(self.charts.abundance.xAxis[0], data.all, "par");
     refreshTimeFrame(3600000, getLatestEpoch(data.new));
   });
+
+  //Recieve new bacteria data event and update the charts with the data received
   $(self.events).on("newstatdata", function(event, data) {
-    //console.log("newstatdata");
     addToPopSeries(self.charts.fsc_small, data.new, "fsc_small");
     addToPopSeries(self.charts.abundance, data.new, "abundance");
     addToSingleSeries(self.charts.prosyn, data.new, "prosyn", "ProSyn");
     refreshTimeFrame(3600000, getLatestEpoch(data.new));
   });
-  /*$(self.events).on("newcstardata", function(event, data) {
-    addToSingleSeries(self.charts.cstar, data.new, "attenuation", "Attenuation");
-  });*/
   $(self.events).on("newdaterange", function(event, data) {
     self.max = data.max;
     Object.keys(self.charts).forEach(function(c) {
@@ -57,13 +57,10 @@ function Charts(events, width) {
 
   // Define a handler for setExtreme x-axis events
   function setExtremesHandler(e) {
-    //console.log("setExtremesHandler: " + isoext(e));
     if (e.trigger === "navigator") {
-      //console.log("  navigator:");
       navigatorNewDateRange(e.min, e.max, this.chart);
     } else if (e.trigger === "updatedData") {
       var ext = this.chart.xAxis[0].getExtremes();
-      //console.log("  updatedData: " + isoext(ext));
       $(self.events).triggerHandler("newdaterange", {
         min: ext.min,
         max: ext.max,
@@ -80,6 +77,7 @@ function Charts(events, width) {
     });
   }, 200);
 
+  //Initialize the charts
   function initCharts() {
     // Make empty charts
     if (self.charts.speed) {
@@ -624,17 +622,6 @@ function findXDataPoints(point) {
     }
   }
   return found;
-}
-
-function iso(d) {
-  return new Date(d).toISOString();
-}
-
-function isoext(ext) {
-  if (ext.min && ext.max) {
-    return new Date(ext.min).toISOString() + " " + new Date(ext.max).toISOString();
-  }
-  return "undefined undefined";
 }
 
 function getLatestEpoch(data){

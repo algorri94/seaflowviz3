@@ -1,4 +1,6 @@
 $(function () {
+  
+  //Initialize all the elements needed for the UI
   var events = {};
   var tracksDisplayed = false;
   var map = new SeaflowMap("cruise-map", events);
@@ -8,6 +10,8 @@ $(function () {
   window.charts = charts;
   window.map = map;
   window.dash = dash;
+
+  //Create the slides and set their listeners
   $("#temp_slide").slider({
     min: -1,
     max: 1,
@@ -24,6 +28,8 @@ $(function () {
   }).on('change', function(e){
     $(events).triggerHandler("newsal", e.value.newValue);
   });
+
+  //Set the historical track button listeners
   $(document).ready(function() {
     $("#show_tracks").click(function(){
     	if(!tracksDisplayed){

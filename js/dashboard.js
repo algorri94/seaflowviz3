@@ -3,7 +3,7 @@
 function Dashboard(events) {
   var self = this;
 
-  self.refreshTimeMilli = 1 * 5 * 1000; // every 3 minute
+  self.refreshTimeMilli = 1 * 5 * 1000; // every 5 seconds
   self.events = events;  // will register jQuery events
   self.pollInterval = null;
 
@@ -18,7 +18,7 @@ function Dashboard(events) {
   // ****************************
 
   // New cruise event
-  // Begin data polling, which usually leads to asking for new SFL data
+  // Begin data polling
   $(self.events).on("newcruise", function(event, data) {
     self.poll();
   });
@@ -35,9 +35,7 @@ function Dashboard(events) {
   // Database polling functions
   // **************************
 
-  // Poll for new data once.
-  // Starts with SFL data which can lead to a chain of data requests,
-  // e.g. stat.csv population data.
+  // Queries the sfl, the steering and the bacteria data once
   self.pollOnce = function() {
     self.getData({
       cur: self.data.sfl,
@@ -59,9 +57,9 @@ function Dashboard(events) {
     });
   };
 
-  // Poll for new data at regular intervals
+  // Executes the pollOnce method periodically every 'self.refreshTimeMilli' ms
   self.poll = function() {
-    self.pollOnce();  // Get data now
+    self.pollOnce();  // Get data once
     // Setup to get data at intervals in the future
     self.pollInterval = setInterval(self.pollOnce, self.refreshTimeMilli);
   };
@@ -69,10 +67,7 @@ function Dashboard(events) {
 
   // options object o:
   //   cur: Array containing current data which will be appended to
-  //   from: Get all data newer than this date (epoch milliseconds).
-  //     Defaults to newest date in cur.
-  //   to: If this is a number, get data between from and to
-  //   table: Name of the table to query
+  //   table: Name of the type of data to query (sfl or stat)
   //   event: Name of the event to trigger as last step
   //   recordHandler: Function to process one record returned query
   //   extra: Any custom processing one new and accumulated data can be done
@@ -109,6 +104,7 @@ function transformData(jsonp, recordHandler) {
   return data;
 }
 
+//Formats the sfl data
 function sflHandler(d, data) {
   d.date = d.epoch_ms;
   d.iso8601 = iso(d.epoch_ms);
@@ -118,6 +114,7 @@ function sflHandler(d, data) {
   data.push(d);
 }
 
+//Formats the stat data
 function statHandler(d, data) {
   d.date = d.epoch_ms;
   if (popLookup[d.pop]) {  // don't want to include unknown pops
@@ -154,6 +151,7 @@ function statHandler(d, data) {
   }
 }
 
+//Adds the calculated speed to the data
 function addSpeed(data) {
   var prev = null;
   data.forEach(function(d) {
@@ -217,7 +215,7 @@ function geo2knots(lonlat1, lonlat2, t1, t2) {
   return km / hours / kmPerKnot;
 }
 
-//Executes the query to get data and executes the callback every 500ms with a 10th of the data
+//Executes the query to get data and executes the callback every 1s with a 5th of the data
 function getData(dataType, cb){
   queryData(dataType, function(data){
     var dataItems = Math.round(data.length/5);

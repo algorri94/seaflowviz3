@@ -39,34 +39,42 @@ function SeaflowMap(div, events) {
   }).addTo(self.cruiseMap);  // add mouse coordinate display
 
   // Register event handlers here
+  //New sfl data recieved, add it to the locations array and update the view
   $(self.events).on("newsfldata", function(event, data) {
     self.addLocs(data.new);
     self.update();
   });
+  //New steering temperature parameter recieved, update the current value and update the view
   $(self.events).on("newtemp", function(event, data) {
     self.currTemperature = data;
     self.update();
   });
+  //New steering salinity parameter recieved, update the current value and update the view
   $(self.events).on("newsal", function(event, data) {
     self.currSalinity = data;
     self.update();
   });
+  //The show tracks button was pressed, get current bounds and send them to the "newbounds" event
   $(self.events).on("show_tracks", function(event, data) {
     var bounds = self.cruiseMap.getBounds();
     $(events).triggerHandler("newbounds", bounds);
   });
+  //The show tracks button was pressed when it was already activated, hide the current tracks
   $(self.events).on("hide_tracks", function(event, data) {
     delete self.trackData;
     self.update();
   });
+  //New track data recieved, add it to the trackData array and update the view
   $(self.events).on("newtrackdata", function(event, data) {
     self.trackData = data;
     self.update();
   });
+  //New steering data recieved, update the recommended path value
   $(self.events).on("newrecpath", function(event, data){
     self.recPath = data;
   });
 
+  //Adds the given LatLong locations to the self.locs array
   self.addLocs = function(newLocs) {
     newLocs.forEach(function(loc) {
       if ($.isNumeric(loc.lat) && $.isNumeric(loc.lon)) {
@@ -74,9 +82,9 @@ function SeaflowMap(div, events) {
         self.locs.push(loc);
       }
     });
-    self.update();
   };
 
+  //Updates all the map markers to the current values
   self.update = function() {
     if (self.locs.length === 0) {
       return;
@@ -163,6 +171,7 @@ function SeaflowMap(div, events) {
   };
 }
 
+//Adds a copyright signature at the right bottom of the map
 function localTileLayer(tileHost) {
   var tileURL = 'http://' + tileHost + '/{z}/{x}/{y}.png';
   var attribution = 'Map data &copy; ';
@@ -174,12 +183,14 @@ function localTileLayer(tileHost) {
   });
 }
 
+//Calculates a point at a current degree rotation from the origLoc point. The distance to the point is calculated relative to the screen size
 function calculatePointAtRotation(origLoc, degree, bounds){
   var distance = Math.abs(bounds.getNorth()-bounds.getSouth())/10;
   var rad = toRadians(degree+180);
   return L.latLng(origLoc.lat+distance*Math.sin(rad), origLoc.lng-distance*Math.cos(rad));
 }
 
+//Transforms degrees to radians
 function toRadians (angle) {
   return angle * (Math.PI / 180);
 }
