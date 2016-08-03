@@ -633,3 +633,14 @@ function getLatestEpoch(data){
   });
   return latest;
 }
+
+function iso(d) {
+  return new Date(d).toISOString();
+}
+ 
+function isoext(ext) {
+  if (ext.min && ext.max) {
+    return new Date(ext.min).toISOString() + " " + new Date(ext.max).toISOString();
+  }
+  return "undefined undefined";
+}
