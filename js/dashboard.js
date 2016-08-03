@@ -247,7 +247,7 @@ function getTrackData(bounds, cb){
     type : "POST",
     data: query,
     error : function(xhr, ts, et) {
-      alert("error errorThrow:" + et);
+      console.log("The query "+query+" failed. Error message: " + et);
     },
     success : function(jsonArray) {
       cb($.parseJSON(jsonArray));
@@ -269,7 +269,7 @@ function queryData(dataType, cb)
     type : "POST",
     data: query,
     error : function(xhr, ts, et) {
-      alert("error errorThrow:" + et);
+      console.log("The query "+query+" failed. Error message: " + et);
     },
     success : function(jsonArray) {
       cb($.parseJSON(jsonArray));
