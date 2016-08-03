@@ -26,9 +26,11 @@ function Dashboard(events) {
   //New bounds event
   //Execute query to get historial track data and throw newtrackdata event with the results
   $(self.events).on("newbounds", function(event, bounds) {
+    var tracks = [];
     getTrackData(bounds, function(d){
-      $(events).triggerHandler("newtrackdata", d);
-    });    
+      tracks.concat(d);
+    });
+    $(events).triggerHandler("newtrackdata", tracks);    
   });
 
   // **************************
@@ -240,12 +242,25 @@ function getData(dataType, cb){
 //Queries BigDawg to get the historical track data inside the given bounds and executes the callback with the results
 function getTrackData(bounds, cb){
   var url = "http://localhost:8080/bigdawg/query";
-  var query = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
-  var query2 = "bdrel(SELECT * FROM psql_sflavg_tbl)";
+  var query1 = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
+  var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl)";
+  //Query to S-Store
   $.ajax({
     url : url,
     type : "POST",
-    data: query,
+    data: query1,
+    error : function(xhr, ts, et) {
+      console.log("The query "+query+" failed. Error message: " + et);
+    },
+    success : function(jsonArray) {
+      cb($.parseJSON(jsonArray));
+    }
+  });
+  //Query to postgres
+  $.ajax({
+    url : url,
+    type : "POST",
+    data: query2,
     error : function(xhr, ts, et) {
       console.log("The query "+query+" failed. Error message: " + et);
     },
