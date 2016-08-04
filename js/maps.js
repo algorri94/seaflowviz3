@@ -8,7 +8,7 @@ function SeaflowMap(div, events) {
   self.locs = [];
   self.recPath = null;
   self.cruiseLayer = null;
-  self.trackData = null;
+  self.trackData = [];
   self.currTemperature = 0;
   self.currSalinity = 0;
   self.pathNames = ["st_neg_temp_neg_sal_rotation",   //0 = Low temperature & low salinity
@@ -62,11 +62,12 @@ function SeaflowMap(div, events) {
   //The show tracks button was pressed when it was already activated, hide the current tracks
   $(self.events).on("hide_tracks", function(event, data) {
     delete self.trackData;
+    self.trackData = [];
     self.update();
   });
   //New track data recieved, add it to the trackData array and update the view
   $(self.events).on("newtrackdata", function(event, data) {
-    self.trackData = data;
+    self.trackData.concat(data);
     self.update();
   });
   //New steering data recieved, update the recommended path value
