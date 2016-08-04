@@ -265,7 +265,6 @@ function getTrackData(bounds, cb){
       console.log("The query "+query+" failed. Error message: " + et);
     },
     success : function(jsonArray) {
-      console.log($.parseJSON(jsonArray));
       cb($.parseJSON(jsonArray));
     }
   });
