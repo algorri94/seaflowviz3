@@ -196,6 +196,10 @@ function toRadians (angle) {
 }
 
 function parseTrackData(data){
+  console.log(data);
+  console.log('');
+  console.log('');
+  console.log('');
   var cruises = [];
   var dict = {};
   var i = 0;
@@ -227,5 +231,6 @@ function formatCruisesTracks(data){
         output[i].push({lat:point.s_lat, lng:point.s_lon});
     });
   }
+  console.log(output);
   return output;
 }
