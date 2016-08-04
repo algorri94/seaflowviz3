@@ -244,7 +244,7 @@ function getTrackData(bounds, cb){
   var query1 = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
   var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl)";
   //Query to S-Store
-  $.ajax({
+  /*$.ajax({
     url : url1,
     type : "POST",
     data: query1,
@@ -255,7 +255,7 @@ function getTrackData(bounds, cb){
       console.log(jsonArray);
       cb($.parseJSON(jsonArray));
     }
-  });
+  });*/
   //Query to postgres
   $.ajax({
     url : url2,
