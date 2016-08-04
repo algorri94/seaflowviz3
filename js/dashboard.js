@@ -243,7 +243,7 @@ function getTrackData(bounds, cb){
   var url1 = "http://localhost:8080/bigdawg/query";
   var url2 = "http://localhost:8080/bigdawg/jsonquery";
   var query1 = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
-  var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl WHERE s_cruise='SCOPE_1 LIMIT 10')";
+  var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl WHERE s_cruise='SCOPE_1' LIMIT 10)";
   //Query to S-Store
   /*$.ajax({
     url : url1,
