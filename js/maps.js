@@ -215,6 +215,7 @@ function parseTrackData(data){
 
 function formatCruisesTracks(data){
   var output = [];
+  console.log(data);
   for(var i = 0; i<data.length; i++){
     var cruise = data[i];
     var id = cruise[0].s_cruise;
@@ -227,5 +228,6 @@ function formatCruisesTracks(data){
         output[i].push({lat:point.s_lat, lng:point.s_lon});
     });
   }
+  console.log(output);
   return output;
 }
