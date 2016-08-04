@@ -66,8 +66,8 @@ function SeaflowMap(div, events) {
   });
   //New track data recieved, add it to the trackData array and update the view
   $(self.events).on("newtrackdata", function(event, data) {
-    self.trackData = data;
-    console.log(data);
+    self.trackData = data.results;
+    console.log(data.results);
     console.log(self.trackData);
     self.update();
   });
