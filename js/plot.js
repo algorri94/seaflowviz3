@@ -33,9 +33,13 @@ $(function () {
   $(document).ready(function() {
     $("#show_tracks").click(function(){
     	if(!tracksDisplayed){
+          $(this).css('background', 'gray');
+          $(this).css('color', 'white');
         	$(events).triggerHandler("show_tracks");
         	tracksDisplayed = true;
         } else {
+          $(this).css('background', 'white');
+          $(this).css('color', 'black');
         	$(events).triggerHandler("hide_tracks");
         	tracksDisplayed = false;
         }
