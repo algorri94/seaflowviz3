@@ -86,35 +86,35 @@ function SeaflowMap(div, events) {
 
   //Updates all the map markers to the current values
   self.update = function() {
-    if (self.locs.length === 0) {
-      return;
+    var fg = L.featureGroup();
+    if (self.locs.length > 0) {
+      var allLatLngs = [];
+      var selectedLatLngs = [];
+      self.locs.forEach(function(doc) {
+        allLatLngs.push(doc.latLng);
+        if (self.min === null && self.max === null) {
+          // All points selected if no date range has been set
+          selectedLatLngs.push(doc.latLng);
+        } else if (doc.date >= self.min && doc.date <= self.max) {
+          selectedLatLngs.push(doc.latLng);
+        }
+      });
+      var latestLatLng = allLatLngs[allLatLngs.length-1];
+      var boatIcon = L.icon({
+        iconUrl: 'leaflet/images/boat.png',
+        iconSize: [16, 16],
+        weight: 5
+      });
+      var latestCircle = new L.marker(latestLatLng, {icon: boatIcon});
+      var selectedCruiseLine = new L.polyline(selectedLatLngs, {
+        color: "red",
+        weight: 6,
+        opacity: 0.5,
+        smoothFactor: 1
+      });
+      fg.addLayer(selectedCruiseLine);
+      fg.addLayer(latestCircle);
     }
-    var allLatLngs = [];
-    var selectedLatLngs = [];
-    self.locs.forEach(function(doc) {
-      allLatLngs.push(doc.latLng);
-      if (self.min === null && self.max === null) {
-        // All points selected if no date range has been set
-        selectedLatLngs.push(doc.latLng);
-      } else if (doc.date >= self.min && doc.date <= self.max) {
-        selectedLatLngs.push(doc.latLng);
-      }
-    });
-    var latestLatLng = allLatLngs[allLatLngs.length-1];
-    var boatIcon = L.icon({
-      iconUrl: 'leaflet/images/boat.png',
-      iconSize: [16, 16],
-      weight: 5
-    });
-    var latestCircle = new L.marker(latestLatLng, {icon: boatIcon});
-    var selectedCruiseLine = new L.polyline(selectedLatLngs, {
-      color: "red",
-      weight: 4,
-      opacity: 0.5,
-      smoothFactor: 1
-    });
-
-    var fg = L.featureGroup([selectedCruiseLine, latestCircle]);
 
     if(self.recPath && latestLatLng && self.zoomed){
       var rotation = 0;
@@ -122,7 +122,7 @@ function SeaflowMap(div, events) {
       if(self.pathNames[value]!=="nosteer"){
         var arrow = new L.polyline([latestLatLng, calculatePointAtRotation(latestLatLng, self.recPath[self.pathNames[value]], self.cruiseMap.getBounds())], {
           color: "green",
-          weight: 4,
+          weight: 6,
           opacity: 1,
           smoothFactor: 1
         });
@@ -133,7 +133,7 @@ function SeaflowMap(div, events) {
                   stroke: true,
                   color: "green",
                   opacity: 1,
-                  weight: 4}})}
+                  weight: 6}})}
             ]
         });
         fg.addLayer(arrow);
@@ -143,12 +143,13 @@ function SeaflowMap(div, events) {
 
     if(self.trackData){
       var trackData = parseTrackData(self.trackData);
+      var colors = ["BlueViolet","Chocolate","DarkKhaki","DeepPink","Black","Yellow"];
       for(var i = 0; i<trackData.length; i++){
         var cruise_md = trackData[i][0];
         var data = trackData[i].splice(1,trackData[i].length);
         var trackLines = new L.polyline(data, {
-          color: "black",
-          weight: 4,
+          color: colors[(i%colors.length)],
+          weight: 6,
           opacity: 0.5,
           smoothFactor: 1
         });
