@@ -252,6 +252,7 @@ function getTrackData(bounds, cb){
       console.log("The query "+query+" failed. Error message: " + et);
     },
     success : function(jsonArray) {
+      console.log(jsonArray);
       cb($.parseJSON(jsonArray));
     }
   });
@@ -264,6 +265,7 @@ function getTrackData(bounds, cb){
       console.log("The query "+query+" failed. Error message: " + et);
     },
     success : function(jsonArray) {
+      console.log(jsonArray);
       cb($.parseJSON(jsonArray));
     }
   });
