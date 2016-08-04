@@ -67,7 +67,6 @@ function SeaflowMap(div, events) {
   //New track data recieved, add it to the trackData array and update the view
   $(self.events).on("newtrackdata", function(event, data) {
     self.trackData = data;
-    console.log(data);
     self.update();
   });
   //New steering data recieved, update the recommended path value
@@ -143,6 +142,7 @@ function SeaflowMap(div, events) {
     }
 
     if(self.trackData){
+      console.log(self.trackData);
       var trackData = parseTrackData(self.trackData);
       for(var i = 0; i<trackData.length; i++){
         var cruise_md = trackData[i][0];
