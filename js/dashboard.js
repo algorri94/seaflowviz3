@@ -27,7 +27,6 @@ function Dashboard(events) {
   //Execute query to get historial track data and throw newtrackdata event with the results
   $(self.events).on("newbounds", function(event, bounds) {
     getTrackData(bounds, function(d){
-      console.log(d);
       $(events).triggerHandler("newtrackdata", d);   
     }); 
   });
