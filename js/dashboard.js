@@ -239,8 +239,8 @@ function getData(dataType, cb){
 
 //Queries BigDawg to get the historical track data inside the given bounds and executes the callback with the results
 function getTrackData(bounds, cb){
-  var url1 = "http://localhost:8080/bigdawg/query";
-  var url2 = "http://localhost:8080/bigdawg/jsonquery";
+  var url1 = "http://localhost:8123/bigdawg/query";
+  var url2 = "http://localhost:8123/bigdawg/jsonquery";
   var query1 = "bdstream(GetTracksInRange, "+bounds.getSouth()+", "+bounds.getNorth()+", "+bounds.getWest()+", "+bounds.getEast()+")";
   var query2 = "bdrel(SELECT s_cruise, s_lat, s_lon, s_epoch_ms FROM psql_sflavg_tbl ORDER BY s_cruise, s_epoch_ms)";
   //Query to S-Store
@@ -279,7 +279,7 @@ function queryData(dataType, cb)
   if(dataType=="sfl") query = "bdstream(GetSFLData)";
   if(dataType=="stat") query = "bdstream(GetBACData)";
   if(dataType=="steer") query = "bdstream(MultiSteering)";
-  var url = "http://localhost:8080/bigdawg/query";
+  var url = "http://localhost:8123/bigdawg/query";
   var data = null;
   $.ajax({
     url : url,
